@@ -56,6 +56,12 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
     private ColorStateList mColors;
     private int mCornerRadius;
 
+    public interface OnSegmentControlClickListener{
+        public void onSegmentControlClick(int index);
+    }
+
+    private OnSegmentControlClickListener mOnSegmentControlClickListener;
+
     public SegmentControl(Context context){
         this(context, null);
     }
@@ -96,6 +102,14 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
         mBackgroundDrawable.setStrokeColor(mColors.getDefaultColor());
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    }
+
+    public void setmOnSegmentControlClickListener(OnSegmentControlClickListener onSegmentControlClickListener){
+        mOnSegmentControlClickListener = onSegmentControlClickListener;
+    }
+
+    public OnSegmentControlClickListener getOnSegmentControlClicklistener(){
+        return mOnSegmentControlClickListener;
     }
 
     public void setText(String... texts){
@@ -212,7 +226,6 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
                         RadiusDrawable normalDrawable = new RadiusDrawable(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, false, 0);
 
                         RadiusDrawable highlightDrawable = new RadiusDrawable(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, false, mColors.getDefaultColor());
-                        highlightDrawable.setStrokeWidth(10);
 
                         mBackgroundDrawables[i].addState(new int[]{-android.R.attr.state_selected}, normalDrawable);
                         mBackgroundDrawables[i].addState(new int[]{android.R.attr.state_selected}, highlightDrawable);
@@ -239,8 +252,8 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
                     mTextViews[i].measure(MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.AT_MOST));
 
-                    if(mSingleChildWidth < mTextViews[i].getMeasuredWidth()) mSingleChildWidth = mTextViews[i].getMeasuredWidth() + mHorizonGap * 2 - 4;
-                    if(mSingleChildHeight < mTextViews[i].getMeasuredHeight()) mSingleChildHeight = mTextViews[i].getMeasuredHeight() + mVerticalGap * 2 - 4;
+                    if(mSingleChildWidth < mTextViews[i].getMeasuredWidth()) mSingleChildWidth = mTextViews[i].getMeasuredWidth() + mHorizonGap * 2;
+                    if(mSingleChildHeight < mTextViews[i].getMeasuredHeight()) mSingleChildHeight = mTextViews[i].getMeasuredHeight() + mVerticalGap * 2;
 
 
                 }
@@ -353,6 +366,10 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
                 tv.setSelected(false);
             }
         }
+
+        if(mOnSegmentControlClickListener != null){
+            mOnSegmentControlClickListener.onSegmentControlClick(v.getId() - 1);
+        }
     }
 
     @Override
@@ -361,8 +378,8 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
         if(mBackgroundDrawable != null){
 
-            int halfWidth = mChildrenWidth / 2;
-            int halfHeight = mChildrenHeight / 2;
+            int halfWidth = getWidth() / 2;
+            int halfHeight = getHeight() / 2;
 
             mBackgroundDrawable.setBounds(mCenterX - halfWidth, mCenterY - halfHeight, mCenterX + halfWidth, mCenterY + halfHeight);
             mBackgroundDrawable.draw(canvas);
