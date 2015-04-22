@@ -18,7 +18,7 @@ import android.widget.TextView;
 /**
  * Created by caifangmao on 15/4/22.
  */
-public class SegmentControl extends ViewGroup {
+public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
     private String[] mTexts;
     private TextView[] mTextViews;
@@ -212,7 +212,7 @@ public class SegmentControl extends ViewGroup {
                         RadiusDrawable normalDrawable = new RadiusDrawable(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, false, 0);
 
                         RadiusDrawable highlightDrawable = new RadiusDrawable(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, false, mColors.getDefaultColor());
-                        highlightDrawable.setStrokeWidth(3);
+                        highlightDrawable.setStrokeWidth(10);
 
                         mBackgroundDrawables[i].addState(new int[]{-android.R.attr.state_selected}, normalDrawable);
                         mBackgroundDrawables[i].addState(new int[]{android.R.attr.state_selected}, highlightDrawable);
@@ -229,6 +229,10 @@ public class SegmentControl extends ViewGroup {
                     }else{
                         mTextViews[i].setBackgroundDrawable(mBackgroundDrawables[i]);
                     }
+
+                    mTextViews[i].setClickable(true);
+                    mTextViews[i].setOnClickListener(this);
+                    mTextViews[i].setId(i + 1);
 
                     mTextViews[i].measure(MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.AT_MOST));
 
@@ -334,6 +338,17 @@ public class SegmentControl extends ViewGroup {
             Log.d("left:" + cLeft + ", top:" + cTop, "right:" + cRight + ",bottom:" + cBottom);
 
             child.layout(cLeft, cTop, cRight, cBottom);
+        }
+    }
+
+    @Override
+    public void onClick(View v){
+        for(TextView tv : mTextViews){
+            if(tv == v){
+                tv.setSelected(true);
+            }else{
+                tv.setSelected(false);
+            }
         }
     }
 
