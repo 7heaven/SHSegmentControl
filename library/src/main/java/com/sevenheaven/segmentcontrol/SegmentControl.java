@@ -220,7 +220,10 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
                     mTextViews[i].setText(text);
                     mTextViews[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
-                    mTextViews[i].setTextColor(mColors);
+
+                    ColorStateList colorList = new ColorStateList(new int[][]{new int[]{-android.R.attr.state_selected}, new int[]{android.R.attr.state_selected}}, new int[]{mColors.getDefaultColor(), 0xFFFFFFFF});
+
+                    mTextViews[i].setTextColor(colorList);
                     mTextViews[i].setSingleLine(true);
                     mTextViews[i].setGravity(Gravity.CENTER);
                     mTextViews[i].setSelected(i == 0 ? true : false);
