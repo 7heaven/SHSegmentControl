@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * Created by caifangmao on 15/4/22.
+ * Created by 7heaven on 15/4/22.
  */
 public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
