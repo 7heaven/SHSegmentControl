@@ -332,6 +332,9 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
         int startX = mCenterX - mChildrenWidth / 2;
         int startY = mCenterY - mChildrenHeight / 2;
 
+        startX = startX < 0 ? 0 : startX;
+        startY = startY < 0 ? 0 : startY;
+
         for(int i = 0; i < getChildCount(); i++){
             View child = getChildAt(i);
 

@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        segmentcontrol:texts="啊啊|啦啦啦|哈哈哈"
+        segmentcontrol:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
         segmentcontrol:colors="#0099CC"
         segmentcontrol:cornerRadius="5dip"
         segmentcontrol:direction="horizon"
