@@ -381,10 +381,7 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
         if(mBackgroundDrawable != null){
 
-            int halfWidth = getWidth() / 2;
-            int halfHeight = getHeight() / 2;
-
-            mBackgroundDrawable.setBounds(mCenterX - halfWidth, mCenterY - halfHeight, mCenterX + halfWidth, mCenterY + halfHeight);
+            mBackgroundDrawable.setBounds(0, 0, getWidth(), getHeight());
             mBackgroundDrawable.draw(canvas);
         }
 
@@ -397,9 +394,9 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
                 mPaint.setColor(mColors.getDefaultColor());
 
                 if(mDirection == Direction.HORIZON){
-                    canvas.drawLine(tv.getRight(), tv.getTop(), tv.getRight(), tv.getBottom() - 2, mPaint);
+                    canvas.drawLine(tv.getRight(), tv.getTop(), tv.getRight(), tv.getBottom(), mPaint);
                 }else{
-                    canvas.drawLine(tv.getLeft(), tv.getBottom(), tv.getRight() - 2, tv.getBottom(), mPaint);
+                    canvas.drawLine(tv.getLeft(), tv.getBottom(), tv.getRight(), tv.getBottom(), mPaint);
                 }
             }
         }
