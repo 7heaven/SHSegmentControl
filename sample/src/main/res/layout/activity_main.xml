@@ -9,12 +9,12 @@
         xmlns:segmentcontrol="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
+        android:textSize="13sp"
         segmentcontrol:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
         segmentcontrol:colors="#0099CC"
         segmentcontrol:cornerRadius="5dip"
         segmentcontrol:direction="horizon"
-        segmentcontrol:verticalGap="0dip"
-        segmentcontrol:horizonGap="5dip"/>
+        segmentcontrol:verticalGap="8dip"
+        segmentcontrol:horizonGap="8dip"/>
 
 </RelativeLayout>

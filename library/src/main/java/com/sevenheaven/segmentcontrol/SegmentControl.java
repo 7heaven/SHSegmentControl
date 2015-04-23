@@ -5,26 +5,39 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.ViewConfiguration;
 import android.widget.TextView;
 
 /**
  * Created by 7heaven on 15/4/22.
  */
-public class SegmentControl extends ViewGroup implements View.OnClickListener {
+public class SegmentControl extends View {
 
     private String[] mTexts;
     private TextView[] mTextViews;
+    private Rect[] mCacheBounds;
+    private Rect[] mTextBounds;
     private StateListDrawable[] mBackgroundDrawables;
 
     private RadiusDrawable mBackgroundDrawable;
+    private RadiusDrawable mSelectedDrawable;
+
+    private int mCurrentIndex;
+
+    private int mTouchSlop;
+    private boolean inTapRegion;
+    private float mStartX;
+    private float mStartY;
+    private float mCurrentX;
+    private float mCurrentY;
 
     private int mHorizonGap;
     private int mVerticalGap;
@@ -37,6 +50,9 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
     private int mSingleChildWidth;
     private int mSingleChildHeight;
+
+    //for api level higher than 18(probably a bug)
+    private int[] mSingleChildMiniHeights;
 
     private Paint mPaint;
 
@@ -61,6 +77,22 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
     }
 
     private OnSegmentControlClickListener mOnSegmentControlClickListener;
+    private View.OnClickListener mItemClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            for(TextView tv : mTextViews){
+                if(tv == v){
+                    tv.setSelected(true);
+                }else{
+                    tv.setSelected(false);
+                }
+            }
+
+            if(mOnSegmentControlClickListener != null){
+                mOnSegmentControlClickListener.onSegmentControlClick(v.getId() - 1);
+            }
+        }
+    };
 
     public SegmentControl(Context context){
         this(context, null);
@@ -99,9 +131,31 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
         mBackgroundDrawable = new RadiusDrawable(mCornerRadius, true, 0);
         mBackgroundDrawable.setStrokeWidth(2);
-        mBackgroundDrawable.setStrokeColor(mColors.getDefaultColor());
+        if(mColors != null) mBackgroundDrawable.setStrokeColor(mColors.getDefaultColor());
+
+        if(Build.VERSION.SDK_INT < 16){
+            setBackgroundDrawable(mBackgroundDrawable);
+        }else{
+            setBackground(mBackgroundDrawable);
+        }
+
+        mSelectedDrawable = new RadiusDrawable(mCornerRadius, false, mColors.getDefaultColor());
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setTextSize(mTextSize);
+        mPaint.setColor(mColors.getDefaultColor());
+
+        int touchSlop = 0;
+
+        if(context == null){
+            touchSlop = ViewConfiguration.getTouchSlop();
+        }else{
+            final ViewConfiguration config = ViewConfiguration.get(context);
+            touchSlop = config.getScaledTouchSlop();
+        }
+
+        mTouchSlop = touchSlop * touchSlop;
+        inTapRegion = false;
     }
 
     public void setmOnSegmentControlClickListener(OnSegmentControlClickListener onSegmentControlClickListener){
@@ -117,14 +171,6 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
 
         if(mTexts != null){
             requestLayout();
-        }else{
-            if(mTextViews != null){
-                for(TextView tv : mTextViews){
-                    if(tv != null){
-                        tv.setText("");
-                    }
-                }
-            }
         }
     }
 
@@ -135,9 +181,12 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
             mBackgroundDrawable.setStrokeColor(colors.getDefaultColor());
         }
 
+        if(mSelectedDrawable != null){
+            mSelectedDrawable.setColor(colors.getDefaultColor());
+        }
+
         mPaint.setColor(colors.getDefaultColor());
 
-        requestLayout();
         invalidate();
     }
 
@@ -148,7 +197,6 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
             mBackgroundDrawable.setRadius(cornerRadius);
         }
 
-        requestLayout();
         invalidate();
     }
 
@@ -160,6 +208,19 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
         if(tDirection != direction){
             requestLayout();
             invalidate();
+        }
+    }
+
+    public void setTextSize(int textSize){
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
+    }
+
+    public void setTextSize(int unit, int textSize){
+        mPaint.setTextSize((int) (TypedValue.applyDimension(unit, textSize, getContext().getResources().getDisplayMetrics())));
+
+        if(textSize != mTextSize){
+            mTextSize = textSize;
+            requestLayout();
         }
     }
 
@@ -176,87 +237,54 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
         int width = 0;
         int height = 0;
 
-        if(mTexts != null){
+        if(mTexts != null && mTexts.length > 0){
 
-            if(mTextViews == null || mTexts.length != mTextViews.length){
-                mTextViews = new TextView[mTexts.length];
+            if(mCacheBounds == null || mCacheBounds.length != mTexts.length){
+                mCacheBounds = new Rect[mTexts.length];
+            }
 
-                removeAllViews();
+            if(mTextBounds == null || mTextBounds.length != mTexts.length){
+                mTextBounds = new Rect[mTexts.length];
             }
 
             if(mBackgroundDrawables == null || mBackgroundDrawables.length != mTexts.length){
                 mBackgroundDrawables = new StateListDrawable[mTexts.length];
             }
 
+            if(mSingleChildMiniHeights == null || mSingleChildMiniHeights.length != mTexts.length){
+                mSingleChildMiniHeights = new int[mTexts.length];
+            }
+
             for(int i = 0; i < mTexts.length; i++){
                 String text = mTexts[i];
 
                 if(text != null){
-                    if(mTextViews[i] == null){
-                        mTextViews[i] = new TextView(getContext());
-                        addView(mTextViews[i]);
-                    }
 
-                    if(mBackgroundDrawables[i] == null){
-                        mBackgroundDrawables[i] = new StateListDrawable();
+                    if(mTextBounds[i] == null) mTextBounds[i] = new Rect();
 
-                        int topLeftRadius = 0;
-                        int topRightRadius = 0;
-                        int bottomLeftRadius = 0;
-                        int bottomRightRadius = 0;
+                    mPaint.getTextBounds(text, 0, text.length(), mTextBounds[i]);
 
-                        if(mDirection == Direction.HORIZON){
-                            if(i == 0){
-                                topLeftRadius = mCornerRadius;
-                                bottomLeftRadius = mCornerRadius;
-                            }else if(i == mTexts.length - 1){
-                                topRightRadius = mCornerRadius;
-                                bottomRightRadius = mCornerRadius;
-                            }
-                        }else{
-                            if(i == 0){
-                                topLeftRadius = mCornerRadius;
-                                topRightRadius = mCornerRadius;
-                            }else if(i == mTexts.length - 1){
-                                bottomLeftRadius = mCornerRadius;
-                                bottomRightRadius = mCornerRadius;
-                            }
-                        }
+                    if(mSingleChildWidth < mTextBounds[i].width() + mHorizonGap * 2) mSingleChildWidth = mTextBounds[i].width() + mHorizonGap * 2;
+                    if(mSingleChildHeight < mTextBounds[i].height() + mVerticalGap * 2) mSingleChildHeight = mTextBounds[i].height() + mVerticalGap * 2;
 
-                        RadiusDrawable normalDrawable = new RadiusDrawable(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, false, 0);
-
-                        RadiusDrawable highlightDrawable = new RadiusDrawable(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, false, mColors.getDefaultColor());
-
-                        mBackgroundDrawables[i].addState(new int[]{-android.R.attr.state_selected}, normalDrawable);
-                        mBackgroundDrawables[i].addState(new int[]{android.R.attr.state_selected}, highlightDrawable);
-                    }
-
-                    mTextViews[i].setText(text);
-                    mTextViews[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
-
-                    ColorStateList colorList = new ColorStateList(new int[][]{new int[]{-android.R.attr.state_selected}, new int[]{android.R.attr.state_selected}}, new int[]{mColors.getDefaultColor(), 0xFFFFFFFF});
-
-                    mTextViews[i].setTextColor(colorList);
-                    mTextViews[i].setSingleLine(true);
-                    mTextViews[i].setGravity(Gravity.CENTER);
-                    mTextViews[i].setSelected(i == 0 ? true : false);
-                    if(Build.VERSION.SDK_INT >= 16){
-                        mTextViews[i].setBackground(mBackgroundDrawables[i]);
-                    }else{
-                        mTextViews[i].setBackgroundDrawable(mBackgroundDrawables[i]);
-                    }
-
-                    mTextViews[i].setClickable(true);
-                    mTextViews[i].setOnClickListener(this);
-                    mTextViews[i].setId(i + 1);
-
-                    mTextViews[i].measure(MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.AT_MOST));
-
-                    if(mSingleChildWidth < mTextViews[i].getMeasuredWidth()) mSingleChildWidth = mTextViews[i].getMeasuredWidth() + mHorizonGap * 2;
-                    if(mSingleChildHeight < mTextViews[i].getMeasuredHeight()) mSingleChildHeight = mTextViews[i].getMeasuredHeight() + mVerticalGap * 2;
-
-
+                    mSingleChildMiniHeights[i] = mTextBounds[i].height();
                 }
+            }
+
+            for(int i = 0; i < mTexts.length; i++){
+
+                if (mCacheBounds[i] == null) mCacheBounds[i] = new Rect();
+
+                if(mDirection == Direction.HORIZON){
+                    mCacheBounds[i].left = i * mSingleChildWidth;
+                    mCacheBounds[i].top = 0;
+                }else{
+                    mCacheBounds[i].left = 0;
+                    mCacheBounds[i].top = i * mSingleChildHeight;
+                }
+
+                mCacheBounds[i].right = mCacheBounds[i].left + mSingleChildWidth;
+                mCacheBounds[i].bottom = mCacheBounds[i].top + mSingleChildHeight;
             }
 
             Log.d("hGap:" + mHorizonGap, "vGap:" + mVerticalGap);
@@ -327,80 +355,108 @@ public class SegmentControl extends ViewGroup implements View.OnClickListener {
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom){
+    public boolean onTouchEvent(MotionEvent event){
 
-        int startX = mCenterX - mChildrenWidth / 2;
-        int startY = mCenterY - mChildrenHeight / 2;
+        Log.d("event:" + event.toString(), "evt");
 
-        startX = startX < 0 ? 0 : startX;
-        startY = startY < 0 ? 0 : startY;
+        switch(event.getAction() & MotionEvent.ACTION_MASK){
+            case MotionEvent.ACTION_DOWN:
+                inTapRegion = true;
 
-        for(int i = 0; i < getChildCount(); i++){
-            View child = getChildAt(i);
+                mStartX = event.getX();
+                mStartY = event.getY();
 
-            int cLeft = 0;
-            int cTop = 0;
-            int cRight = 0;
-            int cBottom = 0;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                mCurrentX = event.getX();
+                mCurrentY = event.getY();
 
-            if(mDirection == Direction.HORIZON){
-                cLeft = startX + (i * mSingleChildWidth);
-                cTop = startY;
-            }else{
-                cLeft = startX;
-                cTop = startY + (i * mSingleChildHeight);
-            }
+                int dx = (int) (mCurrentX - mStartX);
+                int dy = (int) (mCurrentY - mStartY);
 
-            cRight = cLeft + mSingleChildWidth;
-            cBottom = cTop + mSingleChildHeight;
+                int distance = dx * dx + dy * dy;
 
-            Log.d("left:" + cLeft + ", top:" + cTop, "right:" + cRight + ",bottom:" + cBottom);
-
-            child.layout(cLeft, cTop, cRight, cBottom);
-        }
-    }
-
-    @Override
-    public void onClick(View v){
-        for(TextView tv : mTextViews){
-            if(tv == v){
-                tv.setSelected(true);
-            }else{
-                tv.setSelected(false);
-            }
-        }
-
-        if(mOnSegmentControlClickListener != null){
-            mOnSegmentControlClickListener.onSegmentControlClick(v.getId() - 1);
-        }
-    }
-
-    @Override
-    public void dispatchDraw(Canvas canvas){
-        super.dispatchDraw(canvas);
-
-        if(mBackgroundDrawable != null){
-
-            mBackgroundDrawable.setBounds(0, 0, getWidth(), getHeight());
-            mBackgroundDrawable.draw(canvas);
-        }
-
-        if(mTextViews != null && mTextViews.length > 0){
-            for(int i = 0; i < mTextViews.length - 1; i++){
-                TextView tv = mTextViews[i];
-
-                mPaint.setStyle(Paint.Style.STROKE);
-                mPaint.setStrokeWidth(2);
-                mPaint.setColor(mColors.getDefaultColor());
-
-                if(mDirection == Direction.HORIZON){
-                    canvas.drawLine(tv.getRight(), tv.getTop(), tv.getRight(), tv.getBottom(), mPaint);
-                }else{
-                    canvas.drawLine(tv.getLeft(), tv.getBottom(), tv.getRight(), tv.getBottom(), mPaint);
+                if(distance > mTouchSlop){
+                    inTapRegion = false;
                 }
-            }
+
+                break;
+            case MotionEvent.ACTION_UP:
+                if(inTapRegion){
+                    int index = 0;
+                    if(mDirection == Direction.HORIZON){
+                        index = (int) (mStartX / mSingleChildWidth);
+                    }else{
+                        index = (int) (mStartY / mSingleChildHeight);
+                    }
+
+                    Log.d("index:" + index, "asdf");
+
+                    if(mOnSegmentControlClickListener != null) mOnSegmentControlClickListener.onSegmentControlClick(index);
+
+                    mCurrentIndex = index;
+
+                    invalidate();
+                }
+                break;
         }
 
+        return true;
+    }
+
+    @Override
+    public void onDraw(Canvas canvas){
+        super.onDraw(canvas);
+
+        if(mTexts != null && mTexts.length > 0){
+            for(int i = 0; i < mTexts.length; i++){
+
+                if(i < mTexts.length - 1){
+                    mPaint.setColor(mColors.getDefaultColor());
+                    if(mDirection == Direction.HORIZON){
+                        canvas.drawLine(mCacheBounds[i].right, 0, mCacheBounds[i].right, getHeight(), mPaint);
+                    }else{
+                        canvas.drawLine(mCacheBounds[i].left, mSingleChildHeight * (i + 1), mCacheBounds[i].right, mSingleChildHeight * (i + 1), mPaint);
+                    }
+                }
+
+                if(i == mCurrentIndex && mSelectedDrawable != null){
+                    int topLeftRadius = 0;
+                    int topRightRadius = 0;
+                    int bottomLeftRadius = 0;
+                    int bottomRightRadius = 0;
+
+                    if(mDirection == Direction.HORIZON){
+                        if(i == 0){
+                            topLeftRadius = mCornerRadius;
+                            bottomLeftRadius = mCornerRadius;
+                        }else if(i == mTexts.length - 1){
+                            topRightRadius = mCornerRadius;
+                            bottomRightRadius = mCornerRadius;
+                        }
+                    }else{
+                        if(i == 0){
+                            topLeftRadius = mCornerRadius;
+                            topRightRadius = mCornerRadius;
+                        }else if(i == mTexts.length - 1){
+                            bottomLeftRadius = mCornerRadius;
+                            bottomRightRadius = mCornerRadius;
+                        }
+                    }
+
+                    mSelectedDrawable.setRadiuses(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius);
+                    mSelectedDrawable.setBounds(mCacheBounds[i]);
+                    mSelectedDrawable.draw(canvas);
+
+
+                    mPaint.setColor(0xFFFFFFFF);
+                }else{
+                    mPaint.setColor(mColors.getDefaultColor());
+                }
+
+                canvas.drawText(mTexts[i], mCacheBounds[i].left + (mSingleChildWidth - mTextBounds[i].width()) / 2, mCacheBounds[i].top + ((mSingleChildHeight + mTextBounds[i].height()) / 2), mPaint);
+            }
+        }
 
     }
 }

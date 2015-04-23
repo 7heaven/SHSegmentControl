@@ -33,7 +33,7 @@ public class RadiusDrawable extends Drawable {
     private int centerY;
 
     private final Paint paint;
-    private final int color;
+    private int color;
     private final boolean isStroke;
     private int strokeWidth = 0;
     private int strokeColor;
@@ -71,8 +71,19 @@ public class RadiusDrawable extends Drawable {
         this.strokeColor = strokeColor;
     }
 
+    public void setColor(int color){
+        this.color = color;
+    }
+
     public void setRadius(int radius){
         this.topLeftRadius = this.topRightRadius = this.bottomLeftRadius = this.bottomRightRadius = radius;
+    }
+
+    public void setRadiuses(int topLeftRadius, int topRightRadius, int bottomLeftRadius, int bottomRightRadius){
+        this.topLeftRadius = topLeftRadius;
+        this.topRightRadius = topRightRadius;
+        this.bottomLeftRadius = bottomLeftRadius;
+        this.bottomRightRadius = bottomRightRadius;
     }
 
     @Override
