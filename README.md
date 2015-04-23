@@ -3,3 +3,4 @@
 #a simple SegmentControl Widget
 
 ![art1](arts/arts1.gif)
+![art2](arts/arts2.gif)
