@@ -6,15 +6,12 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.TextView;
 
 /**
  * Created by 7heaven on 15/4/22.
@@ -22,10 +19,8 @@ import android.widget.TextView;
 public class SegmentControl extends View {
 
     private String[] mTexts;
-    private TextView[] mTextViews;
     private Rect[] mCacheBounds;
     private Rect[] mTextBounds;
-    private StateListDrawable[] mBackgroundDrawables;
 
     private RadiusDrawable mBackgroundDrawable;
     private RadiusDrawable mSelectedDrawable;
@@ -51,9 +46,6 @@ public class SegmentControl extends View {
     private int mSingleChildWidth;
     private int mSingleChildHeight;
 
-    //for api level higher than 18(probably a bug)
-    private int[] mSingleChildMiniHeights;
-
     private Paint mPaint;
 
     public enum Direction{
@@ -77,22 +69,6 @@ public class SegmentControl extends View {
     }
 
     private OnSegmentControlClickListener mOnSegmentControlClickListener;
-    private View.OnClickListener mItemClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-            for(TextView tv : mTextViews){
-                if(tv == v){
-                    tv.setSelected(true);
-                }else{
-                    tv.setSelected(false);
-                }
-            }
-
-            if(mOnSegmentControlClickListener != null){
-                mOnSegmentControlClickListener.onSegmentControlClick(v.getId() - 1);
-            }
-        }
-    };
 
     public SegmentControl(Context context){
         this(context, null);
@@ -145,6 +121,9 @@ public class SegmentControl extends View {
         mPaint.setTextSize(mTextSize);
         mPaint.setColor(mColors.getDefaultColor());
 
+        //here's the tricky thing, when you doing a click detect on a capacitive touch screen,
+        //sometimes the touch points of touchDown and touchUp are different(it's call slop) even when you didn't actually move your finger,
+        //so we set a distance limit for the distance of this two touch points to create a better user experience;
         int touchSlop = 0;
 
         if(context == null){
@@ -247,14 +226,6 @@ public class SegmentControl extends View {
                 mTextBounds = new Rect[mTexts.length];
             }
 
-            if(mBackgroundDrawables == null || mBackgroundDrawables.length != mTexts.length){
-                mBackgroundDrawables = new StateListDrawable[mTexts.length];
-            }
-
-            if(mSingleChildMiniHeights == null || mSingleChildMiniHeights.length != mTexts.length){
-                mSingleChildMiniHeights = new int[mTexts.length];
-            }
-
             for(int i = 0; i < mTexts.length; i++){
                 String text = mTexts[i];
 
@@ -266,8 +237,6 @@ public class SegmentControl extends View {
 
                     if(mSingleChildWidth < mTextBounds[i].width() + mHorizonGap * 2) mSingleChildWidth = mTextBounds[i].width() + mHorizonGap * 2;
                     if(mSingleChildHeight < mTextBounds[i].height() + mVerticalGap * 2) mSingleChildHeight = mTextBounds[i].height() + mVerticalGap * 2;
-
-                    mSingleChildMiniHeights[i] = mTextBounds[i].height();
                 }
             }
 
@@ -287,12 +256,8 @@ public class SegmentControl extends View {
                 mCacheBounds[i].bottom = mCacheBounds[i].top + mSingleChildHeight;
             }
 
-            Log.d("hGap:" + mHorizonGap, "vGap:" + mVerticalGap);
-
             switch(widthMode){
                 case MeasureSpec.AT_MOST:
-
-
                     if(mDirection == Direction.HORIZON){
                         if(widthSize <= mSingleChildWidth * mTexts.length){
                             mSingleChildWidth = widthSize / mTexts.length;
@@ -357,8 +322,6 @@ public class SegmentControl extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event){
 
-        Log.d("event:" + event.toString(), "evt");
-
         switch(event.getAction() & MotionEvent.ACTION_MASK){
             case MotionEvent.ACTION_DOWN:
                 inTapRegion = true;
@@ -390,8 +353,6 @@ public class SegmentControl extends View {
                         index = (int) (mStartY / mSingleChildHeight);
                     }
 
-                    Log.d("index:" + index, "asdf");
-
                     if(mOnSegmentControlClickListener != null) mOnSegmentControlClickListener.onSegmentControlClick(index);
 
                     mCurrentIndex = index;
@@ -411,6 +372,7 @@ public class SegmentControl extends View {
         if(mTexts != null && mTexts.length > 0){
             for(int i = 0; i < mTexts.length; i++){
 
+                //draw separate lines
                 if(i < mTexts.length - 1){
                     mPaint.setColor(mColors.getDefaultColor());
                     if(mDirection == Direction.HORIZON){
@@ -420,6 +382,7 @@ public class SegmentControl extends View {
                     }
                 }
 
+                //draw selected drawable
                 if(i == mCurrentIndex && mSelectedDrawable != null){
                     int topLeftRadius = 0;
                     int topRightRadius = 0;
@@ -454,6 +417,7 @@ public class SegmentControl extends View {
                     mPaint.setColor(mColors.getDefaultColor());
                 }
 
+                //draw texts
                 canvas.drawText(mTexts[i], mCacheBounds[i].left + (mSingleChildWidth - mTextBounds[i].width()) / 2, mCacheBounds[i].top + ((mSingleChildHeight + mTextBounds[i].height()) / 2), mPaint);
             }
         }
