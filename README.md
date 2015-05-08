@@ -1,4 +1,4 @@
-[![License](http://img.shields.io/:license-mit-blue.svg)](http://mit-license.org)
+[![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE)
 
 #一个简单的SegmentControl控件
 ***
