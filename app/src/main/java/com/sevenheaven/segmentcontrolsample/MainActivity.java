@@ -5,13 +5,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.lang.Override;
+
 
 public class MainActivity extends ActionBarActivity {
+
+    SegmentControl segmentControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        segmentControl = (SegmentControl) findViewById(R.id.segment_control);
+
+        segmentControl.setOnSegmentControlClickListener(new SegmentControlClickListener(){
+            @Override
+            public void onSegmentControlClick(int index){
+                
+            }
+        });
     }
 
     @Override

@@ -137,7 +137,7 @@ public class SegmentControl extends View {
         inTapRegion = false;
     }
 
-    public void setmOnSegmentControlClickListener(OnSegmentControlClickListener onSegmentControlClickListener){
+    public void setOnSegmentControlClickListener(OnSegmentControlClickListener onSegmentControlClickListener){
         mOnSegmentControlClickListener = onSegmentControlClickListener;
     }
 
