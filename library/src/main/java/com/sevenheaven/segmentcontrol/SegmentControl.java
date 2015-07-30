@@ -365,6 +365,12 @@ public class SegmentControl extends View {
         return true;
     }
 
+    public void setSelectedIndex(int index){
+        mCurrentIndex = index;
+
+        invalidate();
+    }
+
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
