@@ -107,7 +107,12 @@ public class SegmentControl extends View {
 
         mBackgroundDrawable = new RadiusDrawable(mCornerRadius, true, 0);
         mBackgroundDrawable.setStrokeWidth(2);
-        if(mColors != null) mBackgroundDrawable.setStrokeColor(mColors.getDefaultColor());
+
+        if(mColors == null){
+            mColors = new ColorStateList(new int[][]{{}}, new int[]{0xFF0099CC});
+        }
+
+        mBackgroundDrawable.setStrokeColor(mColors.getDefaultColor());
 
         if(Build.VERSION.SDK_INT < 16){
             setBackgroundDrawable(mBackgroundDrawable);
