@@ -126,9 +126,6 @@ public class SegmentControl extends View {
         mPaint.setTextSize(mTextSize);
         mPaint.setColor(mColors.getDefaultColor());
 
-        //here's the tricky thing, when you doing a click detect on a capacitive touch screen,
-        //sometimes the touch points of touchDown and touchUp are different(it's call slop) even when you didn't actually move your finger,
-        //so we set a distance limit for the distance of this two touch points to create a better user experience;
         int touchSlop = 0;
 
         if(context == null){
@@ -245,22 +242,6 @@ public class SegmentControl extends View {
                 }
             }
 
-            for(int i = 0; i < mTexts.length; i++){
-
-                if (mCacheBounds[i] == null) mCacheBounds[i] = new Rect();
-
-                if(mDirection == Direction.HORIZON){
-                    mCacheBounds[i].left = i * mSingleChildWidth;
-                    mCacheBounds[i].top = 0;
-                }else{
-                    mCacheBounds[i].left = 0;
-                    mCacheBounds[i].top = i * mSingleChildHeight;
-                }
-
-                mCacheBounds[i].right = mCacheBounds[i].left + mSingleChildWidth;
-                mCacheBounds[i].bottom = mCacheBounds[i].top + mSingleChildHeight;
-            }
-
             switch(widthMode){
                 case MeasureSpec.AT_MOST:
                     if(mDirection == Direction.HORIZON){
@@ -309,6 +290,34 @@ public class SegmentControl extends View {
                         height = heightSize <= mSingleChildHeight ? heightSize : mSingleChildHeight;
                     }
                     break;
+            }
+
+            switch(mDirection){
+                case HORIZON:
+                    if(mSingleChildWidth != width / mTexts.length) mSingleChildWidth = width / mTexts.length;
+                    mSingleChildHeight = height;
+                    break;
+                case VERTICAL:
+                    if(mSingleChildHeight != height / mTexts.length) mSingleChildHeight = height / mTexts.length;
+                    mSingleChildWidth = width;
+                    break;
+            }
+
+
+            for(int i = 0; i < mTexts.length; i++){
+
+                if (mCacheBounds[i] == null) mCacheBounds[i] = new Rect();
+
+                if(mDirection == Direction.HORIZON){
+                    mCacheBounds[i].left = i * mSingleChildWidth;
+                    mCacheBounds[i].top = 0;
+                }else{
+                    mCacheBounds[i].left = 0;
+                    mCacheBounds[i].top = i * mSingleChildHeight;
+                }
+
+                mCacheBounds[i].right = mCacheBounds[i].left + mSingleChildWidth;
+                mCacheBounds[i].bottom = mCacheBounds[i].top + mSingleChildHeight;
             }
 
             mChildrenWidth = mDirection == Direction.HORIZON ? mSingleChildWidth * mTexts.length : mSingleChildWidth;

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/7heaven/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-16254443f6c8af6529b2fe2c606d43005f4e9cac.jar" />
+    </item>
+    <item
+        jar="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/pre-dexed/debug/classes-4fcc261c10323fd34810bd4e1162e06922415cec.jar" />
+    </item>
+    <item
+        jar="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/pre-dexed/debug/classes-e1e655f77059ffc09a015478209904c7790fed34.jar" />
+    </item>
+    <item
+        jar="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-332a68e03f7e2a2523b639882597ca9dd1ae3112.jar" />
+    </item>
+    <item
+        jar="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/exploded-aar/SHSegmentControl/library/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="c38d27f2d98b47423c4ac1c0543b247fc6dd3419">
+        <dex dex="/Users/7heaven/AndroidStudioProjects/SHSegmentControl/sample/build/intermediates/pre-dexed/debug/classes-1d35a9faf38e5ad30223dced5e1a03cc9230d8d7.jar" />
+    </item>
+
+</items>
