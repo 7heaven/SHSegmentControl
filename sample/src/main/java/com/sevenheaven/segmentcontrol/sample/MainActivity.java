@@ -2,16 +2,38 @@ package com.sevenheaven.segmentcontrol.sample;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.sevenheaven.segmentcontrol.SegmentControl;
+
 
 public class MainActivity extends ActionBarActivity {
+    private static final String TAG = "MainActivity";
+
+    private SegmentControl mSegmentHorzontal;
+    private SegmentControl mSegmentVertical;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSegmentHorzontal = (SegmentControl) findViewById(R.id.segment_control);
+        mSegmentVertical = (SegmentControl) findViewById(R.id.segment_control2);
+        mSegmentHorzontal.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
+            @Override
+            public void onSegmentControlClick(int index) {
+                Log.i(TAG, "onSegmentControlClick: index = " + index);
+            }
+        });
+        mSegmentVertical.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
+            @Override
+            public void onSegmentControlClick(int index) {
+                Log.i(TAG, "onSegmentControlClick: index" + index);
+            }
+        });
     }
 
     @Override

@@ -1,21 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              tools:context=".MainActivity">
 
     <com.sevenheaven.segmentcontrol.SegmentControl
-        xmlns:segmentcontrol="http://schemas.android.com/apk/res-auto"
         android:id="@+id/segment_control"
+        xmlns:segmentcontrol="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
-        segmentcontrol:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
         segmentcontrol:colors="#0099CC"
         segmentcontrol:cornerRadius="5dip"
         segmentcontrol:direction="horizon"
-        segmentcontrol:verticalGap="8dip"
-        segmentcontrol:horizonGap="8dip"/>
+        segmentcontrol:horizonGap="8dip"
+        segmentcontrol:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
+        segmentcontrol:verticalGap="8dip"/>
 
-</RelativeLayout>
+    <com.sevenheaven.segmentcontrol.SegmentControl
+        android:id="@+id/segment_control2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        app:colors="#0099CC"
+        app:cornerRadius="5dp"
+        app:direction="vertical"
+        app:horizonGap="10dp"
+        app:textSelectedColors="#E74C3C"
+        app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
+        app:verticalGap="10dp"/>
+
+</LinearLayout>
