@@ -326,7 +326,6 @@ public class SegmentControl extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // TODO: 2016/5/17  ACTION_MASK
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 inTapRegion = true;

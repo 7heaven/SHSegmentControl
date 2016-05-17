@@ -14,6 +14,22 @@ set segmentControl's property using attrs,using '|' to separate segments.
 
 ![art3](arts/arts3.png)
 
+``` xml
+    <com.sevenheaven.segmentcontrol.SegmentControl
+        android:id="@+id/segment_control2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        app:colors="#0099CC"
+        app:cornerRadius="5dp"
+        app:direction="vertical"
+        app:horizonGap="10dp"
+        app:textSelectedColors="#E74C3C"
+        app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
+        app:verticalGap="10dp"/>
+```
+
 using OnSegmentControlClickListener to listen to segment change event.
 
 ![art4](arts/arts4.png)
