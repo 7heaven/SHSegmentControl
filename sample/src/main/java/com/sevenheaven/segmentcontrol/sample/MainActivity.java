@@ -20,14 +20,14 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-mSegmentHorzontal = (SegmentControl) findViewById(R.id.segment_control);
-mSegmentVertical = (SegmentControl) findViewById(R.id.segment_control2);
-mSegmentHorzontal.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
-    @Override
-    public void onSegmentControlClick(int index) {
-        Log.i(TAG, "onSegmentControlClick: index = " + index);
-    }
-});
+        mSegmentHorzontal = (SegmentControl) findViewById(R.id.segment_control);
+        mSegmentVertical = (SegmentControl) findViewById(R.id.segment_control2);
+        mSegmentHorzontal.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
+            @Override
+            public void onSegmentControlClick(int index) {
+                Log.i(TAG, "onSegmentControlClick: index = " + index);
+            }
+        });
         mSegmentVertical.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
             @Override
             public void onSegmentControlClick(int index) {

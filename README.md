@@ -22,7 +22,7 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```java
     dependencies {
-		compile 'com.github.User:Repo:Tag'
+		compile 'com.github.AudienL:SHSegmentControl:V1.0'
 	}
 ```
 
@@ -31,6 +31,7 @@ set segmentControl's property using attrs,using '|' to separate segments.
 
 ``` xml
 <com.sevenheaven.segmentcontrol.SegmentControl
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/segment_control"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -47,7 +48,7 @@ set segmentControl's property using attrs,using '|' to separate segments.
 
 using OnSegmentControlClickListener to listen to segment change event.
 
-```xml
+```java
 mSegmentHorzontal = (SegmentControl) findViewById(R.id.segment_control);
 mSegmentHorzontal.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
     @Override
