@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
                 Log.i(TAG, "onSegmentControlClick: index" + index);
             }
         });
+        mSegmentVertical.setText("AAA", "BBB", "CCC");
     }
 
     @Override

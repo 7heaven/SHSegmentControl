@@ -7,26 +7,30 @@
 
 ![art1](arts/arts1.gif)
 
-##Usage
-***
+## 使用：
 
-Step 1. Add it in your root build.gradle at the end of repositories:
-```java
-    allprojects {
-		repositories {
-			maven { url "https://jitpack.io" }
-		}
-	}
+### 一、在 project 根目录的 build.gradle 中添加：
+
+```groovy
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
 ```
 
-Step 2. Add the dependency
-```java
-    dependencies {
-		compile 'com.github.AudienL:SHSegmentControl:V1.1'
-	}
+### 二、在 module 根目录的 build.gradle 中添加：
+
+其中最后版本在 release 中查看，如：1.0
+```groovy
+dependencies {
+    compile 'com.github.AudienL:SHSegmentControl:最后版本'
+}
 ```
 
-Step 3. use it!
+### 三、使用
+
 set segmentControl's property using attrs,using '|' to separate segments.
 
 ``` xml
@@ -41,6 +45,8 @@ set segmentControl's property using attrs,using '|' to separate segments.
     app:cornerRadius="5dp"
     app:direction="vertical"
     app:horizonGap="10dp"
+    app:stroke_inner_width="2dp"
+    app:stroke_width="4dp"
     app:textSelectedColors="#E74C3C"
     app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
     app:verticalGap="10dp"/>
