@@ -100,8 +100,12 @@ public class SegmentControl extends View {
 
         int gap = ta.getDimensionPixelSize(R.styleable.SegmentControl_gaps, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, context.getResources().getDisplayMetrics()));
 
-        if(mHorizonGap == 0) mHorizonGap = gap;
-        if(mVerticalGap == 0) mVerticalGap = gap;
+        if(mHorizonGap == 0) {
+            mHorizonGap = gap;
+        }
+        if(mVerticalGap == 0) {
+            mVerticalGap = gap;
+        }
 
         ta.recycle();
 
@@ -233,12 +237,18 @@ public class SegmentControl extends View {
 
                 if(text != null){
 
-                    if(mTextBounds[i] == null) mTextBounds[i] = new Rect();
+                    if(mTextBounds[i] == null) {
+                        mTextBounds[i] = new Rect();
+                    }
 
                     mPaint.getTextBounds(text, 0, text.length(), mTextBounds[i]);
 
-                    if(mSingleChildWidth < mTextBounds[i].width() + mHorizonGap * 2) mSingleChildWidth = mTextBounds[i].width() + mHorizonGap * 2;
-                    if(mSingleChildHeight < mTextBounds[i].height() + mVerticalGap * 2) mSingleChildHeight = mTextBounds[i].height() + mVerticalGap * 2;
+                    if(mSingleChildWidth < mTextBounds[i].width() + mHorizonGap * 2) {
+                        mSingleChildWidth = mTextBounds[i].width() + mHorizonGap * 2;
+                    }
+                    if(mSingleChildHeight < mTextBounds[i].height() + mVerticalGap * 2) {
+                        mSingleChildHeight = mTextBounds[i].height() + mVerticalGap * 2;
+                    }
                 }
             }
 
@@ -265,6 +275,8 @@ public class SegmentControl extends View {
                         width = widthSize <= mSingleChildWidth ? widthSize : mSingleChildWidth;
                     }
                     break;
+                default:
+                    break;
             }
 
             switch(heightMode){
@@ -290,23 +302,33 @@ public class SegmentControl extends View {
                         height = heightSize <= mSingleChildHeight ? heightSize : mSingleChildHeight;
                     }
                     break;
+                default:
+                    break;
             }
 
             switch(mDirection){
                 case HORIZON:
-                    if(mSingleChildWidth != width / mTexts.length) mSingleChildWidth = width / mTexts.length;
+                    if(mSingleChildWidth != width / mTexts.length) {
+                        mSingleChildWidth = width / mTexts.length;
+                    }
                     mSingleChildHeight = height;
                     break;
                 case VERTICAL:
-                    if(mSingleChildHeight != height / mTexts.length) mSingleChildHeight = height / mTexts.length;
+                    if(mSingleChildHeight != height / mTexts.length) {
+                        mSingleChildHeight = height / mTexts.length;
+                    }
                     mSingleChildWidth = width;
+                    break;
+                default:
                     break;
             }
 
 
             for(int i = 0; i < mTexts.length; i++){
 
-                if (mCacheBounds[i] == null) mCacheBounds[i] = new Rect();
+                if (mCacheBounds[i] == null) {
+                    mCacheBounds[i] = new Rect();
+                }
 
                 if(mDirection == Direction.HORIZON){
                     mCacheBounds[i].left = i * mSingleChildWidth;
@@ -367,12 +389,16 @@ public class SegmentControl extends View {
                         index = (int) (mStartY / mSingleChildHeight);
                     }
 
-                    if(mOnSegmentControlClickListener != null) mOnSegmentControlClickListener.onSegmentControlClick(index);
+                    if(mOnSegmentControlClickListener != null) {
+                        mOnSegmentControlClickListener.onSegmentControlClick(index);
+                    }
 
                     mCurrentIndex = index;
 
                     invalidate();
                 }
+                break;
+            default:
                 break;
         }
 

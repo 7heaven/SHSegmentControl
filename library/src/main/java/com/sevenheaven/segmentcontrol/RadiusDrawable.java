@@ -26,12 +26,6 @@ public class RadiusDrawable extends Drawable {
     private int right;
     private int bottom;
 
-    private int width;
-    private int height;
-
-    private int centerX;
-    private int centerY;
-
     private final Paint paint;
     private int color;
     private final boolean isStroke;
