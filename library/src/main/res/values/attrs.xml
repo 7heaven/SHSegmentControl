@@ -2,17 +2,22 @@
 <resources>
 
     <declare-styleable name="SegmentControl">
-        <attr name="cornerRadius" format="dimension|reference" />
-        <attr name="colors" format="color|reference" />
-        <attr name="texts" format="string|reference" />
-        <attr name="android:textSize" />
+        <attr name="cornerRadius" format="dimension|reference"/>
+        <attr name="colors" format="color|reference"/>
+        <attr name="textSelectedColors" format="color|reference"/>
+        <attr name="texts" format="string|reference"/>
+        <attr name="android:textSize"/>
         <attr name="direction" format="enum">
-            <enum name="horizon" value="0" />
-            <enum name="vertical" value="1" />
+            <enum name="horizon" value="0"/>
+            <enum name="vertical" value="1"/>
         </attr>
-        <attr name="gaps" format="dimension|reference" />
-        <attr name="horizonGap" format="dimension|reference" />
-        <attr name="verticalGap" format="dimension|reference" />
+        <!-- 外部边框的width -->
+        <attr name="stroke_width" format="dimension|reference"/>
+        <!-- 内部边框的width -->
+        <attr name="stroke_inner_width" format="dimension|reference"/>
+        <attr name="gaps" format="dimension|reference"/>
+        <attr name="horizonGap" format="dimension|reference"/>
+        <attr name="verticalGap" format="dimension|reference"/>
     </declare-styleable>
 
 </resources>

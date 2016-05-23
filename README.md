@@ -7,13 +7,59 @@
 
 ![art1](arts/arts1.gif)
 
-##Usage
-***
+## 使用：
+
+### 一、在 project 根目录的 build.gradle 中添加：
+
+```groovy
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+### 二、在 module 根目录的 build.gradle 中添加：
+
+其中最后版本在 release 中查看，如：1.0
+```groovy
+dependencies {
+    compile 'com.github.AudienL:SHSegmentControl:最后版本'
+}
+```
+
+### 三、使用
 
 set segmentControl's property using attrs,using '|' to separate segments.
 
-![art3](arts/arts3.png)
+``` xml
+<com.sevenheaven.segmentcontrol.SegmentControl
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/segment_control"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:textSize="18sp"
+    app:colors="#0099CC"
+    app:cornerRadius="5dp"
+    app:direction="vertical"
+    app:horizonGap="10dp"
+    app:stroke_inner_width="2dp"
+    app:stroke_width="4dp"
+    app:textSelectedColors="#E74C3C"
+    app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
+    app:verticalGap="10dp"/>
+```
 
 using OnSegmentControlClickListener to listen to segment change event.
 
-![art4](arts/arts4.png)
+```java
+mSegmentHorzontal = (SegmentControl) findViewById(R.id.segment_control);
+mSegmentHorzontal.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
+    @Override
+    public void onSegmentControlClick(int index) {
+        Log.i(TAG, "onSegmentControlClick: index = " + index);
+    }
+});
+```
