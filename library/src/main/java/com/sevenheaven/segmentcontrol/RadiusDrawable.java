@@ -1,8 +1,8 @@
 package com.sevenheaven.segmentcontrol;
 
 
-
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
 // 圆角 Drawable 每个角的圆半径可以不同 （使用不同半径圆角图形的时候 使用这个类 以防止 系统提供的用 xml 实现的圆角 Drawable 在2.3 上 出现各个角位置错乱）
+
 /**
  * Created by caifangmao on 15/4/22.
  */
@@ -27,33 +28,22 @@ public class RadiusDrawable extends Drawable {
     private int bottom;
 
     private final Paint paint;
-    private int color;
     private final boolean isStroke;
     private int strokeWidth = 0;
-    private int strokeColor;
+    private int strokeColor = Color.CYAN;
+    private int fillColor;
 
     private Path path;
 
-    public RadiusDrawable(int topLeftRadius, int topRightRadius, int bottomLeftRadius,
-                          int bottomRightRadius, boolean isStroke, int color) {
-        this.topLeftRadius = topLeftRadius;
-        this.topRightRadius = topRightRadius;
-        this.bottomLeftRadius = bottomLeftRadius;
-        this.bottomRightRadius = bottomRightRadius;
-
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.isStroke = isStroke;
-        this.color = color;
+    public RadiusDrawable(boolean isStroke) {
+        this(0, isStroke);
     }
 
-    public RadiusDrawable(int radius, boolean isStroke, int color) {
-        this.topLeftRadius =
-                this.topRightRadius = this.bottomLeftRadius = this.bottomRightRadius = radius;
+    public RadiusDrawable(int radius, boolean isStroke) {
+        setRadius(radius);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.isStroke = isStroke;
-        this.color = color;
-
     }
 
     public void setStrokeWidth(int width) {
@@ -65,15 +55,15 @@ public class RadiusDrawable extends Drawable {
         this.strokeColor = strokeColor;
     }
 
-    public void setColor(int color){
-        this.color = color;
+    public void setFillColor(int fillColor) {
+        this.fillColor = fillColor;
     }
 
-    public void setRadius(int radius){
+    public void setRadius(int radius) {
         this.topLeftRadius = this.topRightRadius = this.bottomLeftRadius = this.bottomRightRadius = radius;
     }
 
-    public void setRadiuses(int topLeftRadius, int topRightRadius, int bottomLeftRadius, int bottomRightRadius){
+    public void setRadius(int topLeftRadius, int topRightRadius, int bottomLeftRadius, int bottomRightRadius) {
         this.topLeftRadius = topLeftRadius;
         this.topRightRadius = topRightRadius;
         this.bottomLeftRadius = bottomLeftRadius;
@@ -119,8 +109,8 @@ public class RadiusDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-        if (color != 0) {
-            paint.setColor(color);
+        if (fillColor != 0) {
+            paint.setColor(fillColor);
             paint.setStyle(Paint.Style.FILL);
             canvas.drawPath(path, paint);
         }
@@ -136,17 +126,14 @@ public class RadiusDrawable extends Drawable {
 
     @Override
     public void setAlpha(int alpha) {
-
     }
 
     @Override
     public void setColorFilter(ColorFilter cf) {
-
     }
 
     @Override
     public int getOpacity() {
         return PixelFormat.TRANSLUCENT;
     }
-
 }
