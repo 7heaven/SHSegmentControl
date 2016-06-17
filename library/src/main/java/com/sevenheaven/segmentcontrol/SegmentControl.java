@@ -39,9 +39,9 @@ public class SegmentControl extends View {
     private int mVerticalGap;
 
     /** 外边框的width */
-    private int mStrokeWidth = 4;
+    private int mBoundWidth = 4;
     /** 内边框的width */
-    private int mStrokeInnerWidth = mStrokeWidth / 2;
+    private int mSeparatorWidth = mBoundWidth / 2;
 
     private int mSingleChildWidth;
     private int mSingleChildHeight;
@@ -108,13 +108,13 @@ public class SegmentControl extends View {
             mColors = new ColorStateList(new int[][]{{}}, new int[]{0xFF0099CC});
         }
 
-        mStrokeWidth = ta.getDimensionPixelSize(R.styleable.SegmentControl_stroke_width, mStrokeWidth);
-        mStrokeInnerWidth = ta.getDimensionPixelSize(R.styleable.SegmentControl_stroke_inner_width, mStrokeInnerWidth);
+        mBoundWidth = ta.getDimensionPixelSize(R.styleable.SegmentControl_boundWidth, mBoundWidth);
+        mSeparatorWidth = ta.getDimensionPixelSize(R.styleable.SegmentControl_separatorWidth, mSeparatorWidth);
 
         ta.recycle();
 
         mBackgroundDrawable = new RadiusDrawable(mCornerRadius, true);
-        mBackgroundDrawable.setStrokeWidth(mStrokeWidth);
+        mBackgroundDrawable.setStrokeWidth(mBoundWidth);
         mBackgroundDrawable.setStrokeColor(mColors.getDefaultColor());
 
         if (Build.VERSION.SDK_INT < 16) {
@@ -409,7 +409,7 @@ public class SegmentControl extends View {
                 //draw separate lines
                 if (i < mTexts.length - 1) {
                     mPaint.setColor(mColors.getDefaultColor());
-                    mPaint.setStrokeWidth(mStrokeInnerWidth);
+                    mPaint.setStrokeWidth(mSeparatorWidth);
                     if (mDirection == Direction.HORIZONTAL) {
                         canvas.drawLine(mCacheBounds[i].right, 0, mCacheBounds[i].right, getHeight(), mPaint);
                     } else {

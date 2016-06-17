@@ -12,9 +12,9 @@
             <enum name="vertical" value="1"/>
         </attr>
         <!-- 外部边框的width -->
-        <attr name="stroke_width" format="dimension|reference"/>
+        <attr name="boundWidth" format="dimension|reference"/>
         <!-- 内部边框的width -->
-        <attr name="stroke_inner_width" format="dimension|reference"/>
+        <attr name="separatorWidth" format="dimension|reference"/>
         <attr name="gaps" format="dimension|reference"/>
         <attr name="horizonGap" format="dimension|reference"/>
         <attr name="verticalGap" format="dimension|reference"/>

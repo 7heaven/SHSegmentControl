@@ -32,9 +32,10 @@
         app:colors="#0099CC"
         app:cornerRadius="5dp"
         app:direction="vertical"
+        app:texts="aa|bb|cc"
         app:horizonGap="10dp"
-        app:stroke_inner_width="1dp"
-        app:stroke_width="5dp"
+        app:strokeInnerWidth="1dp"
+        app:strokeWidth="5dp"
         app:textSelectedColors="#E74C3C"
         app:verticalGap="10dp"/>
 
