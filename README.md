@@ -45,8 +45,8 @@ set segmentControl's property using attrs,using '|' to separate segments.
     app:cornerRadius="5dp"
     app:direction="vertical"
     app:horizonGap="10dp"
-    app:stroke_inner_width="2dp"
-    app:stroke_width="4dp"
+    app:separatorWidth="2dp"
+    app:boundWidth="4dp"
     app:textSelectedColors="#E74C3C"
     app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
     app:verticalGap="10dp"/>
