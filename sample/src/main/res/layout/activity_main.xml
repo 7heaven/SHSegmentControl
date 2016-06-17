@@ -34,8 +34,8 @@
         app:direction="vertical"
         app:texts="aa|bb|cc"
         app:horizonGap="10dp"
-        app:strokeInnerWidth="1dp"
-        app:strokeWidth="5dp"
+        app:separatorWidth="1dp"
+        app:boundWidth="5dp"
         app:textSelectedColors="#E74C3C"
         app:verticalGap="10dp"/>
 
