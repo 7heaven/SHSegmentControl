@@ -150,6 +150,8 @@ public class SegmentControl extends View {
 
     /**
      * 设置选中的时候文字的颜色
+     *
+     * @param color 需要设置的颜色
      */
     public void setSelectedTextColors(int color) {
         mSelectedTextColor = color;
@@ -158,6 +160,8 @@ public class SegmentControl extends View {
 
     /**
      * 包括选中颜色和边框颜色和默认文字颜色
+     *
+     * @param colors 颜色
      */
     public void setColors(ColorStateList colors) {
         mColors = colors;

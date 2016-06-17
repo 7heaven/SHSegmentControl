@@ -1,0 +1,79 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+Properties bintraySProperties = new Properties()
+File f = new File("local.properties")
+if(f.exists()) {
+    bintraySProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+}
+
+group = rootProject.ext.pomGroup
+version = rootProject.ext.versionName
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging rootProject.ext.pomPackaging
+                name rootProject.ext.pomName
+                url rootProject.ext.pomSiteUrl
+
+                licenses {
+                    license {
+                        name rootProject.ext.pomLicenseName
+                        url rootProject.ext.pomLicenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id bintraySProperties.getProperty("bintray.id")
+                        name bintraySProperties.getProperty("bintray.name")
+                        email bintraySProperties.getProperty("bintray.email")
+                    }
+                }
+
+                scm {
+                    connection rootProject.ext.pomGitUrl
+                    developerConnection rootProject.ext.pomGitUrl
+                    url rootProject.ext.pomSiteUrl
+                }
+
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc){
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = bintraySProperties.getProperty("bintray.user")
+    key = bintraySProperties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = rootProject.ext.pomName
+        websiteUrl = rootProject.ext.pomSiteUrl
+        vcsUrl = rootProject.ext.pomGitUrl
+        licenses = [rootProject.ext.pomLicenseShort]
+        publish = true
+    }
+}
