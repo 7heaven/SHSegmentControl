@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -227,6 +228,9 @@ public class SegmentControl extends View {
 
         if (mTexts != null && mTexts.length > 0) {
 
+            mSingleChildHeight = 0;
+            mSingleChildWidth = 0;
+
             if (mCacheBounds == null || mCacheBounds.length != mTexts.length) {
                 mCacheBounds = new Rect[mTexts.length];
             }
@@ -272,13 +276,12 @@ public class SegmentControl extends View {
                     width = widthSize;
                     break;
                 case MeasureSpec.UNSPECIFIED:
+                default:
                     if (mDirection == Direction.HORIZONTAL) {
                         width = mSingleChildWidth * mTexts.length;
                     } else {
-                        width = widthSize <= mSingleChildWidth ? widthSize : mSingleChildWidth;
+                        width = mSingleChildWidth;
                     }
-                    break;
-                default:
                     break;
             }
 
@@ -299,13 +302,13 @@ public class SegmentControl extends View {
                     height = heightSize;
                     break;
                 case MeasureSpec.UNSPECIFIED:
+                default:
                     if (mDirection == Direction.VERTICAL) {
                         height = mSingleChildHeight * mTexts.length;
                     } else {
-                        height = heightSize <= mSingleChildHeight ? heightSize : mSingleChildHeight;
+                        height = mSingleChildHeight;
                     }
-                    break;
-                default:
+
                     break;
             }
 
