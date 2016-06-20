@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -459,7 +460,11 @@ public class SegmentControl extends View {
                 }
 
                 //draw texts
-                canvas.drawText(mTexts[i], mCacheBounds[i].left + (mSingleChildWidth - mTextBounds[i].width()) / 2, mCacheBounds[i].top + ((mSingleChildHeight + mTextBounds[i].height()) / 2), mPaint);
+                Paint.FontMetrics fm = mPaint.getFontMetrics();
+
+                float baseline = mCacheBounds[i].top + ((mSingleChildHeight - fm.ascent + fm.descent) / 2) - fm.descent;
+                canvas.drawText(mTexts[i], mCacheBounds[i].left + (mSingleChildWidth - mTextBounds[i].width()) / 2, baseline, mPaint);
+
             }
         }
     }
