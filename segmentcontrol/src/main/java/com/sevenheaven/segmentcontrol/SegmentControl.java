@@ -55,6 +55,8 @@ public class SegmentControl extends View {
     private int mSelectedTextColor;
     private int mCornerRadius;
 
+    private Paint.FontMetrics mCachedFM;
+
     public enum Direction {
         HORIZONTAL(0), VERTICAL(1);
 
@@ -130,6 +132,7 @@ public class SegmentControl extends View {
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mTextSize);
+        mCachedFM = mPaint.getFontMetrics();
 
         int touchSlop = 0;
         if (context == null) {
@@ -208,6 +211,8 @@ public class SegmentControl extends View {
 
         if (textSize != mTextSize) {
             mTextSize = textSize;
+            mCachedFM = mPaint.getFontMetrics();
+
             requestLayout();
         }
     }
@@ -412,6 +417,7 @@ public class SegmentControl extends View {
         super.onDraw(canvas);
 
         if (mTexts != null && mTexts.length > 0) {
+
             for (int i = 0; i < mTexts.length; i++) {
 
                 //draw separate lines
@@ -460,9 +466,8 @@ public class SegmentControl extends View {
                 }
 
                 //draw texts
-                Paint.FontMetrics fm = mPaint.getFontMetrics();
 
-                float baseline = mCacheBounds[i].top + ((mSingleChildHeight - fm.ascent + fm.descent) / 2) - fm.descent;
+                float baseline = mCacheBounds[i].top + ((mSingleChildHeight - mCachedFM.ascent + mCachedFM.descent) / 2) - mCachedFM.descent;
                 canvas.drawText(mTexts[i], mCacheBounds[i].left + (mSingleChildWidth - mTextBounds[i].width()) / 2, baseline, mPaint);
 
             }
