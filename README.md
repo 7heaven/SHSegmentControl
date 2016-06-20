@@ -10,20 +10,9 @@
 
 ## 使用：
 
-### 一、在 project 根目录的 build.gradle 中添加：
+### 在 module 根目录的 build.gradle 中添加：
 
-```groovy
-allprojects {
-    repositories {
-        jcenter()
-        maven { url "https://jitpack.io" }
-    }
-}
-```
-
-### 二、在 module 根目录的 build.gradle 中添加：
-
-其中最后版本在 release 中查看，如：1.0
+其中最后版本在 release 中查看，如：1.13
 ```groovy
 dependencies {
     compile 'com.7heaven.widgets:segmentcontrol:1.13'
