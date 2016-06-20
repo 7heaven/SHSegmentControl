@@ -26,7 +26,7 @@ allprojects {
 其中最后版本在 release 中查看，如：1.0
 ```groovy
 dependencies {
-    compile 'com.github.AudienL:SHSegmentControl:最后版本'
+    compile 'com.7heaven.widgets:segmentcontrol:1.13'
 }
 ```
 
