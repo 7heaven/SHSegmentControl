@@ -8,18 +8,16 @@
 
 ![art1](arts/arts1.gif)
 
-## 使用：
+## Usage：
 
-### 在 module 根目录的 build.gradle 中添加：
+### add dependency to build.gradle：
 
-其中最后版本在 release 中查看，如：1.13
+
 ```groovy
 dependencies {
     compile 'com.7heaven.widgets:segmentcontrol:1.13'
 }
 ```
-
-### 三、使用
 
 set segmentControl's property using attrs,using '|' to separate segments.
 
