@@ -9,14 +9,14 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/sample" />
+            <option value="$PROJECT_DIR$/example" />
             <option value="$PROJECT_DIR$/segmentcontrol" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/sample" />
+            <option value="$PROJECT_DIR$/example" />
             <option value="$PROJECT_DIR$/segmentcontrol" />
           </set>
         </option>
