@@ -3,11 +3,13 @@
 
     <declare-styleable name="SegmentControl">
         <attr name="cornerRadius" format="dimension|reference"/>
-        <attr name="colors" format="color|reference"/>
-        <attr name="textSelectedColors" format="color|reference"/>
+        <attr name="normalColor" format="color|reference" />
+        <attr name="selectedColor" format="color|reference" />
+        <attr name="backgroundColors" format="color|reference"/>
+        <attr name="textColors" format="color|reference"/>
         <attr name="texts" format="string|reference"/>
         <attr name="android:textSize"/>
-        <attr name="direction" format="enum">
+        <attr name="block_direction" format="enum">
             <enum name="horizon" value="0"/>
             <enum name="vertical" value="1"/>
         </attr>

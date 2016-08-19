@@ -7,14 +7,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+
+import com.sevenheaven.segmentcontrol.R;
 
 /**
  * Created by 7heaven on 15/4/22.
@@ -51,9 +51,12 @@ public class SegmentControl extends View {
     private Paint mPaint;
 
     private int mTextSize;
-    private ColorStateList mColors;
-    private int mSelectedTextColor;
+    private ColorStateList mBackgroundColors;
+    private ColorStateList mTextColors;
     private int mCornerRadius;
+
+    private int DEFAULT_SELECTED_COLOR = 0xFF32ADFF;
+    private int DEFAULT_NORMAL_COLOR = 0xFFFFFFFF;
 
     private Paint.FontMetrics mCachedFM;
 
@@ -89,7 +92,7 @@ public class SegmentControl extends View {
 
         mTextSize = ta.getDimensionPixelSize(R.styleable.SegmentControl_android_textSize, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, context.getResources().getDisplayMetrics()));
         mCornerRadius = ta.getDimensionPixelSize(R.styleable.SegmentControl_cornerRadius, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, context.getResources().getDisplayMetrics()));
-        mDirection = Direction.values()[ta.getInt(R.styleable.SegmentControl_direction, 0)];
+        mDirection = Direction.values()[ta.getInt(R.styleable.SegmentControl_block_direction, 0)];
 
         mHorizonGap = ta.getDimensionPixelSize(R.styleable.SegmentControl_horizonGap, 0);
         mVerticalGap = ta.getDimensionPixelSize(R.styleable.SegmentControl_verticalGap, 0);
@@ -106,10 +109,17 @@ public class SegmentControl extends View {
         mBackgroundDrawable = new RadiusDrawable(mCornerRadius, true);
         mBackgroundDrawable.setStrokeWidth(2);
 
-        mColors = ta.getColorStateList(R.styleable.SegmentControl_colors);
-        mSelectedTextColor = ta.getColor(R.styleable.SegmentControl_textSelectedColors, Color.WHITE);
-        if (mColors == null) {
-            mColors = new ColorStateList(new int[][]{{}}, new int[]{0xFF0099CC});
+        DEFAULT_NORMAL_COLOR = ta.getColor(R.styleable.SegmentControl_normalColor, DEFAULT_NORMAL_COLOR);
+        DEFAULT_SELECTED_COLOR = ta.getColor(R.styleable.SegmentControl_selectedColor, DEFAULT_SELECTED_COLOR);
+
+        mBackgroundColors = ta.getColorStateList(R.styleable.SegmentControl_backgroundColors);
+        mTextColors = ta.getColorStateList(R.styleable.SegmentControl_textColors);
+        if (mBackgroundColors == null) {
+            mBackgroundColors = new ColorStateList(new int[][]{{android.R.attr.state_selected}, {-android.R.attr.state_selected}}, new int[]{DEFAULT_SELECTED_COLOR, DEFAULT_NORMAL_COLOR});
+        }
+
+        if(mTextColors == null){
+            mTextColors = new ColorStateList(new int[][]{{android.R.attr.state_selected}, {-android.R.attr.state_selected}}, new int[]{DEFAULT_NORMAL_COLOR, DEFAULT_SELECTED_COLOR});
         }
 
         mBoundWidth = ta.getDimensionPixelSize(R.styleable.SegmentControl_boundWidth, mBoundWidth);
@@ -119,7 +129,8 @@ public class SegmentControl extends View {
 
         mBackgroundDrawable = new RadiusDrawable(mCornerRadius, true);
         mBackgroundDrawable.setStrokeWidth(mBoundWidth);
-        mBackgroundDrawable.setStrokeColor(mColors.getDefaultColor());
+        mBackgroundDrawable.setStrokeColor(getSelectedBGColor());
+        mBackgroundDrawable.setFillColor(getNormalBGColor());
 
         if (Build.VERSION.SDK_INT < 16) {
             setBackgroundDrawable(mBackgroundDrawable);
@@ -128,7 +139,7 @@ public class SegmentControl extends View {
         }
 
         mSelectedDrawable = new RadiusDrawable(false);
-        mSelectedDrawable.setFillColor(mColors.getDefaultColor());
+        mSelectedDrawable.setFillColor(getSelectedBGColor());
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mTextSize);
@@ -153,29 +164,30 @@ public class SegmentControl extends View {
     }
 
     /**
-     * 设置选中的时候文字的颜色
+     * 设置文字颜色
      *
      * @param color 需要设置的颜色
      */
-    public void setSelectedTextColors(int color) {
-        mSelectedTextColor = color;
+    public void setSelectedTextColors(ColorStateList color) {
+        mTextColors = color;
         invalidate();
     }
 
     /**
-     * 包括选中颜色和边框颜色和默认文字颜色
+     * 设置背景颜色
      *
      * @param colors 颜色
      */
     public void setColors(ColorStateList colors) {
-        mColors = colors;
+        mBackgroundColors = colors;
 
         if (mBackgroundDrawable != null) {
-            mBackgroundDrawable.setStrokeColor(colors.getDefaultColor());
+            mBackgroundDrawable.setStrokeColor(getSelectedBGColor());
+            mBackgroundDrawable.setFillColor(getNormalBGColor());
         }
 
         if (mSelectedDrawable != null) {
-            mSelectedDrawable.setFillColor(colors.getDefaultColor());
+            mSelectedDrawable.setFillColor(getSelectedBGColor());
         }
 
         invalidate();
@@ -412,6 +424,22 @@ public class SegmentControl extends View {
         return true;
     }
 
+    private int getSelectedTextColor(){
+        return mTextColors.getColorForState(new int[]{android.R.attr.state_selected}, DEFAULT_NORMAL_COLOR);
+    }
+
+    private int getNormalTextColor(){
+        return mTextColors.getColorForState(new int[]{-android.R.attr.state_selected}, DEFAULT_SELECTED_COLOR);
+    }
+
+    private int getSelectedBGColor(){
+        return mBackgroundColors.getColorForState(new int[]{android.R.attr.state_selected}, DEFAULT_SELECTED_COLOR);
+    }
+
+    private int getNormalBGColor(){
+        return mBackgroundColors.getColorForState(new int[]{-android.R.attr.state_selected}, DEFAULT_NORMAL_COLOR);
+    }
+
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -422,7 +450,7 @@ public class SegmentControl extends View {
 
                 //draw separate lines
                 if (i < mTexts.length - 1) {
-                    mPaint.setColor(mColors.getDefaultColor());
+                    mPaint.setColor(getSelectedBGColor());
                     mPaint.setStrokeWidth(mSeparatorWidth);
                     if (mDirection == Direction.HORIZONTAL) {
                         canvas.drawLine(mCacheBounds[i].right, 0, mCacheBounds[i].right, getHeight(), mPaint);
@@ -460,9 +488,9 @@ public class SegmentControl extends View {
                     mSelectedDrawable.setBounds(mCacheBounds[i]);
                     mSelectedDrawable.draw(canvas);
 
-                    mPaint.setColor(mSelectedTextColor);
+                    mPaint.setColor(getSelectedTextColor());
                 } else {
-                    mPaint.setColor(mColors.getDefaultColor());
+                    mPaint.setColor(getNormalTextColor());
                 }
 
                 //draw texts

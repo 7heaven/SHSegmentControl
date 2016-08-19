@@ -15,9 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
-        app:colors="#0099CC"
+        app:selectedColor="#0099CC"
+        app:normalColor="#FFFFFF"
         app:cornerRadius="5dip"
-        app:direction="horizon"
+        app:block_direction="horizon"
         app:horizonGap="8dip"
         app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
         app:verticalGap="8dip"/>
@@ -28,14 +29,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textSize="18sp"
-        app:colors="#0099CC"
+        app:selectedColor="#0099CC"
+        app:normalColor="#FFFFFF"
+        app:textColors="@color/text_color"
+        app:backgroundColors="@color/background_color"
         app:cornerRadius="5dp"
-        app:direction="vertical"
+        app:block_direction="vertical"
         app:texts="aa|bb|cc"
         app:horizonGap="10dp"
         app:separatorWidth="1dp"
         app:boundWidth="5dp"
-        app:textSelectedColors="#E74C3C"
         app:verticalGap="10dp"/>
 
 </LinearLayout>

@@ -3,8 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SHSegmentControl.iml" filepath="$PROJECT_DIR$/SHSegmentControl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/example/sample.iml" filepath="$PROJECT_DIR$/example/sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
       <module fileurl="file://$PROJECT_DIR$/segmentcontrol/library.iml" filepath="$PROJECT_DIR$/segmentcontrol/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/sample.iml" filepath="$PROJECT_DIR$/example/sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/segmentcontrol/segmentcontrol.iml" filepath="$PROJECT_DIR$/segmentcontrol/segmentcontrol.iml" />
     </modules>
   </component>
