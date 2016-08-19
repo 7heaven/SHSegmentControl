@@ -9,10 +9,7 @@
         <attr name="textColors" format="color|reference"/>
         <attr name="texts" format="string|reference"/>
         <attr name="android:textSize"/>
-        <attr name="block_direction" format="enum">
-            <enum name="horizon" value="0"/>
-            <enum name="vertical" value="1"/>
-        </attr>
+        <attr name="android:orientation" />
         <!-- 外部边框的width -->
         <attr name="boundWidth" format="dimension|reference"/>
         <!-- 内部边框的width -->

@@ -92,7 +92,7 @@ public class SegmentControl extends View {
 
         mTextSize = ta.getDimensionPixelSize(R.styleable.SegmentControl_android_textSize, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, context.getResources().getDisplayMetrics()));
         mCornerRadius = ta.getDimensionPixelSize(R.styleable.SegmentControl_cornerRadius, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, context.getResources().getDisplayMetrics()));
-        mDirection = Direction.values()[ta.getInt(R.styleable.SegmentControl_block_direction, 0)];
+        mDirection = Direction.values()[ta.getInt(R.styleable.SegmentControl_android_orientation, 0)];
 
         mHorizonGap = ta.getDimensionPixelSize(R.styleable.SegmentControl_horizonGap, 0);
         mVerticalGap = ta.getDimensionPixelSize(R.styleable.SegmentControl_verticalGap, 0);

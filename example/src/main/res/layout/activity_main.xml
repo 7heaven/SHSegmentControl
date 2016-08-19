@@ -18,7 +18,7 @@
         app:selectedColor="#0099CC"
         app:normalColor="#FFFFFF"
         app:cornerRadius="5dip"
-        app:block_direction="horizon"
+        android:orientation="horizontal"
         app:horizonGap="8dip"
         app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
         app:verticalGap="8dip"/>
@@ -34,7 +34,7 @@
         app:textColors="@color/text_color"
         app:backgroundColors="@color/background_color"
         app:cornerRadius="5dp"
-        app:block_direction="vertical"
+        android:orientation="vertical"
         app:texts="aa|bb|cc"
         app:horizonGap="10dp"
         app:separatorWidth="1dp"
