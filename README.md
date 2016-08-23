@@ -41,7 +41,8 @@ set segmentControl's property using attrs,using '|' to separate segments.
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"                       	
-    android:textSize="18sp"                                 	app:block_direction="horizontal"
+    android:textSize="18sp"
+	app:block_direction="horizontal"
     app:selectedColor="#32ADFF"
 	app:normalColor="#FFFFFF"
     app:textColors="@color/text_colors"
@@ -50,7 +51,8 @@ set segmentControl's property using attrs,using '|' to separate segments.
     app:separatorWidth="2dp"
     app:boundWidth="4dp"
     app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
-    app:verticalGap="10dp"                     					app:horizonGap="10dp"/>
+    app:verticalGap="10dp"
+    app:horizonGap="10dp"/>
 ```
 
 using OnSegmentControlClickListener to listen to segment change event.
