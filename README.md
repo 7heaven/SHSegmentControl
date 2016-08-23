@@ -15,11 +15,24 @@
 
 ```groovy
 dependencies {
-    compile 'com.7heaven.widgets:segmentcontrol:1.14'
+    compile 'com.7heaven.widgets:segmentcontrol:1.16'
 }
 ```
 
 set segmentControl's property using attrs,using '|' to separate segments.
+
+* **selectedColor** attribute for setting the selected color
+* **normalColor** attribute for setting the unselected color
+* **textColors** attribute for setting text colors, this attribute accept ColorStateList so you can set text selected color & text unselected color using this attribute,once this attribute is set, the previously selectedColor & normalColor attributes will not affect the text color
+* **backgroundColors** for setting the round corner background stroke color, separators color & selected background color,same as textColors, when this attribute is set, previously selectedColor & normalColor attributes will not affect the background color, this attribute accept ColorStateList
+* **cornerRadius** setting the corner radius of the background
+* **boundWidth** setting the round corner background stroke width
+* **separatorWidth** setting width of separators
+* **texts** setting the string contents, separated by '|'
+* **verticalGap** vertical padding
+* **horizonGap** horizontal padding
+
+**noticed that textColors & backgroundColors has higher priority than selectedColor & normalColor**
 
 ``` xml
 <com.sevenheaven.segmentcontrol.SegmentControl
@@ -27,17 +40,17 @@ set segmentControl's property using attrs,using '|' to separate segments.
     android:id="@+id/segment_control"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:textSize="18sp"
+    android:layout_marginTop="20dp"                       	
+    android:textSize="18sp"                                 	app:block_direction="horizontal"
     app:selectedColor="#32ADFF"
 	app:normalColor="#FFFFFF"
+    app:textColors="@color/text_colors"
+    app:backgroundColors="@color/background_color"
     app:cornerRadius="5dp"
-	android:orientation="horizontal"
-    app:horizonGap="10dp"
     app:separatorWidth="2dp"
     app:boundWidth="4dp"
     app:texts="啊啊|啦啦啦|哈哈哈|顶顶顶顶"
-    app:verticalGap="10dp"/>
+    app:verticalGap="10dp"                     					app:horizonGap="10dp"/>
 ```
 
 using OnSegmentControlClickListener to listen to segment change event.
