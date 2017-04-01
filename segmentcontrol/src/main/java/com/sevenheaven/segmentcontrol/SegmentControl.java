@@ -466,21 +466,28 @@ public class SegmentControl extends View {
                     int bottomLeftRadius = 0;
                     int bottomRightRadius = 0;
 
-                    if (mDirection == Direction.HORIZONTAL) {
-                        if (i == 0) {
-                            topLeftRadius = mCornerRadius;
-                            bottomLeftRadius = mCornerRadius;
-                        } else if (i == mTexts.length - 1) {
-                            topRightRadius = mCornerRadius;
-                            bottomRightRadius = mCornerRadius;
-                        }
-                    } else {
-                        if (i == 0) {
-                            topLeftRadius = mCornerRadius;
-                            topRightRadius = mCornerRadius;
-                        } else if (i == mTexts.length - 1) {
-                            bottomLeftRadius = mCornerRadius;
-                            bottomRightRadius = mCornerRadius;
+                    if(mTexts.length == 1){
+                        topLeftRadius = mCornerRadius;
+                        bottomLeftRadius = mCornerRadius;
+                        topRightRadius = mCornerRadius;
+                        bottomRightRadius = mCornerRadius;
+                    }else{
+                        if (mDirection == Direction.HORIZONTAL) {
+                            if (i == 0) {
+                                topLeftRadius = mCornerRadius;
+                                bottomLeftRadius = mCornerRadius;
+                            } else if (i == mTexts.length - 1) {
+                                topRightRadius = mCornerRadius;
+                                bottomRightRadius = mCornerRadius;
+                            }
+                        } else {
+                            if (i == 0) {
+                                topLeftRadius = mCornerRadius;
+                                topRightRadius = mCornerRadius;
+                            } else if (i == mTexts.length - 1) {
+                                bottomLeftRadius = mCornerRadius;
+                                bottomRightRadius = mCornerRadius;
+                            }
                         }
                     }
 
