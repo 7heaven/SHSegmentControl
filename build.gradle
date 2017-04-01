@@ -26,8 +26,8 @@ ext{
 
     minSdkVersion = 8
     targetSdkVersion = 21
-    versionCode = 106
-    versionName = "1.16"
+    versionCode = 107
+    versionName = "1.17"
 
     pomPackaging = "aar"
     pomName = "SHSegmentControl"
