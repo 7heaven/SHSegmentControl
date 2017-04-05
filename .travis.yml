@@ -4,12 +4,15 @@ jdk:
 
 android:
   components:
+	- tools
+	- platform-tools
     - build-tools-25.0.0
-    - android-23
+    - android-25
+	- extra-android-m2repository
   licenses:
-	- android-sdk-preview-license-52d11cd2
-	- android-sdk-license-.+
-	- google-gdk-license-.+
+	- 'android-sdk-preview-license-.+'
+	- 'android-sdk-license-.+'
+	- 'google-gdk-license-.+'
 
 notifications:
   email: true
@@ -24,4 +27,3 @@ install:
 
 script:
   - ./gradlew clean assembleDebug
-
