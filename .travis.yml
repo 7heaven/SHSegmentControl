@@ -8,6 +8,10 @@ android:
     - build-tools-23.0.0
     - android-23
 
+licenses:
+	- 'android-sdk-preview-license-.+'
+	- 'android-sdk-license-.+'
+	- 'google-gdk-license-.+'
 notifications:
   email: true
 
