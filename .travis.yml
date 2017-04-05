@@ -4,8 +4,9 @@ jdk:
 
 android:
   components:
-
+	- tools
     - build-tools-25.0.0
+	- platform-tools
     - android-23
 
 notifications:
