@@ -17,7 +17,7 @@
 
 ```groovy
 dependencies {
-    compile 'com.7heaven.widgets:segmentcontrol:1.16'
+    compile 'com.7heaven.widgets:segmentcontrol:1.17'
 }
 ```
 
