@@ -8,9 +8,9 @@ android:
     - android-25
     - extra-android-m2repository
   licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
 
 notifications:
   email: true
