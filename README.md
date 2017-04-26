@@ -2,9 +2,9 @@
 [![License](https://img.shields.io/badge/apache-2.0-orange.svg)](LICENSE)
 [ ![Download](https://api.bintray.com/packages/7heaven/maven/SHSegmentControl/images/download.svg) ](https://bintray.com/7heaven/maven/SHSegmentControl/_latestVersion)
 
-###中文
+### 中文
 
-#a simple SegmentControl Widget
+# a simple SegmentControl Widget
 
 ![art2](arts/arts2.gif)
 
@@ -67,9 +67,9 @@ mSegmentHorzontal.setOnSegmentControlClickListener(new SegmentControl.OnSegmentC
 });
 ```
 
-###English
+### English
 
-#a simple SegmentControl Widget
+# a simple SegmentControl Widget
 
 ![art2](arts/arts2.gif)
 
