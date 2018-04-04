@@ -229,6 +229,10 @@ public class SegmentControl extends View {
     public void setSelectedIndex(int index) {
         mCurrentIndex = index;
 
+        if(mOnSegmentControlClickListener != null) {
+            mOnSegmentControlClickListener.onSegmentControlClick(index);
+        }
+
         invalidate();
     }
 
@@ -406,13 +410,7 @@ public class SegmentControl extends View {
                         index = (int) (mStartY / mSingleChildHeight);
                     }
 
-                    if(mOnSegmentControlClickListener != null) {
-                        mOnSegmentControlClickListener.onSegmentControlClick(index);
-                    }
-
-                    mCurrentIndex = index;
-
-                    invalidate();
+                    setSelectedIndex(index);
                 }
                 break;
             default:
