@@ -41,4 +41,23 @@
         app:boundWidth="5dp"
         app:verticalGap="10dp"/>
 
+    <com.sevenheaven.segmentcontrol.SegmentControl
+        android:id="@+id/rechargeoil_segment_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingBottom="9dp"
+        android:textSize="18sp"
+        app:backgroundColors="@color/oil_sc_bg_color"
+        app:boundWidth="1dp"
+        app:cornerRadius="20dp"
+        app:horizonGap="25dp"
+        app:separatorWidth="1dp"
+        app:textBold="true"
+        app:textColors="@color/oil_sc_text_color"
+        app:texts="有卡|无卡"
+        app:verticalGap="8dp" />
+
 </LinearLayout>
