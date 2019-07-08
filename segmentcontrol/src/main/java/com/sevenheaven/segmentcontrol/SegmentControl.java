@@ -48,6 +48,7 @@ public class SegmentControl extends View {
     private Paint mPaint;
 
     private int mTextSize;
+    private boolean mTextBold;
     private ColorStateList mBackgroundColors;
     private ColorStateList mTextColors;
     private int mCornerRadius;
@@ -88,6 +89,7 @@ public class SegmentControl extends View {
         }
 
         mTextSize = ta.getDimensionPixelSize(R.styleable.SegmentControl_android_textSize, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, context.getResources().getDisplayMetrics()));
+        mTextBold = ta.getBoolean(R.styleable.SegmentControl_textBold, false);
         mCornerRadius = ta.getDimensionPixelSize(R.styleable.SegmentControl_cornerRadius, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, context.getResources().getDisplayMetrics()));
         mDirection = Direction.values()[ta.getInt(R.styleable.SegmentControl_android_orientation, 0)];
 
@@ -140,15 +142,11 @@ public class SegmentControl extends View {
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mTextSize);
+        mPaint.setFakeBoldText(mTextBold);
         mCachedFM = mPaint.getFontMetrics();
 
-        int touchSlop = 0;
-        if (context == null) {
-            touchSlop = ViewConfiguration.getTouchSlop();
-        } else {
-            final ViewConfiguration config = ViewConfiguration.get(context);
-            touchSlop = config.getScaledTouchSlop();
-        }
+        final ViewConfiguration config = ViewConfiguration.get(context);
+        int touchSlop = config.getScaledTouchSlop();
         mTouchSlop = touchSlop * touchSlop;
         inTapRegion = false;
     }

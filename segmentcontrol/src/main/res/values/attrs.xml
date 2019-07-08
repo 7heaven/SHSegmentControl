@@ -8,6 +8,7 @@
         <attr name="backgroundColors" format="color|reference"/>
         <attr name="textColors" format="color|reference"/>
         <attr name="texts" format="string|reference"/>
+        <attr name="textBold" format="boolean"/>
         <attr name="android:textSize"/>
         <attr name="android:orientation" />
         <!-- 外部边框的width -->
