@@ -17,7 +17,10 @@ android:
 notifications:
   email: true
 
-cache: false
+cache:
+   directories:
+   - $HOME/.gradle/caches/
+   - $HOME/.gradle/wrapper/
 
 sudo: false
 
